@@ -10,7 +10,7 @@ export async function GET(
   const id = params.id
   console.log("URL"+process.env.FITBARK_REST);
   try {
-    const apiRes = await fetch(`${process.env.FITBARK_REST}/dogs/${id}/activity`)
+    const apiRes = await fetch(`${process.env.NEXT_PUBLIC_FITBARK_REST}/dogs/${id}/activity`)
     const data = await apiRes.json()
     return NextResponse.json(data)
   } catch (error) {
