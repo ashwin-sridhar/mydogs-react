@@ -1,5 +1,5 @@
 'use client';
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useCallback } from 'react';
 import dynamic from 'next/dynamic';
 
 type Coordinate = [number, number]; // [latitude, longitude]
@@ -16,17 +16,22 @@ const GPSMap: React.FC = () => {
   const [coordinates, setCoordinates] = useState<Coordinate[]>([]);
   const [socket, setSocket] = useState<WebSocket | null>(null);
 
-  useEffect(() => {
-    if (typeof window !== 'undefined') {
-      // Initialize WebSocket connection
-      console.log("Yolo"+process.env.NEXT_PUBLIC_FITBARK_WS);
-      const ws = new WebSocket(process.env.NEXT_PUBLIC_FITBARK_WS||'');
+  const initializeWebSocket = useCallback(() => {
+    const wsUrl = process.env.NEXT_PUBLIC_FITBARK_WS;
+    if (!wsUrl) {
+      console.error('WebSocket URL is not defined');
+      return;
+    }
 
-      ws.onopen = () => {
-        console.log('WebSocket connection established');
-      };
+    console.log("Connecting to WebSocket:", wsUrl);
+    const ws = new WebSocket(wsUrl);
 
-      ws.onmessage = (event) => {
+    ws.onopen = () => {
+      console.log('WebSocket connection established');
+    };
+
+    ws.onmessage = (event) => {
+      try {
         const data = JSON.parse(event.data);
         if (data.latitude && data.longitude) {
           setCoordinates((prevCoordinates) => [
@@ -34,26 +39,37 @@ const GPSMap: React.FC = () => {
             [data.latitude, data.longitude],
           ]);
         }
-      };
+      } catch (error) {
+        console.error('Error parsing WebSocket message:', error);
+      }
+    };
 
-      ws.onerror = (error) => {
-        console.error('WebSocket error:', error);
-      };
+    ws.onerror = (error) => {
+      console.error('WebSocket error:', error);
+    };
 
-      ws.onclose = () => {
-        console.log('WebSocket connection closed');
-      };
+    ws.onclose = () => {
+      console.log('WebSocket connection closed');
+    };
 
-      setSocket(ws);
+    setSocket(ws);
 
-      // Clean up WebSocket connection on component unmount
-      return () => {
-        if (ws) {
-          ws.close();
-        }
-      };
-    }
+    return ws;
   }, []);
+
+  useEffect(() => {
+    let ws: WebSocket | undefined;
+
+    if (typeof window !== 'undefined') {
+      ws = initializeWebSocket();
+    }
+
+    return () => {
+      if (ws) {
+        ws.close();
+      }
+    };
+  }, [initializeWebSocket]);
 
   return (
     <div className="h-screen w-full">

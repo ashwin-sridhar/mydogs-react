@@ -46,7 +46,7 @@ export default function Home() {
         animate={{ y: 0, opacity: 1 }}
         transition={{ duration: 0.5 }}
       >
-        Ashwin Sridhar's pack
+        Ashwin Sridhar&apos;s pack
       </motion.div>
 
       <div className="grid items-center justify-items-center min-h-screen p-8 font-[family-name:var(--font-geist-sans)]">
