@@ -5,12 +5,13 @@ import ScoobyImg from "../../images/Scooby.jpg"
 import KipImg from "../../images/Kip.jpg"
 import EnzoImg from "../../images/Enzo.jpg"
 import MouseImg from "../../images/Mouse.jpg"
+//import loadingSVG from "../../images/loading.svg";
 
 const petData = [
-  { name: "Scooby", gender: "M", age: "15Y", img: ScoobyImg },
-  { name: "Kip", gender: "F", age: "6Y", img: KipImg },
-  { name: "Enzo", gender: "M", age: "6Y", img: EnzoImg },
-  { name: "Mouse", gender: "M", age: "5Y", img: MouseImg },
+  { id:1, name: "Scooby", gender: "M", age: "15Y", img: ScoobyImg },
+  { id:2,name: "Kip", gender: "F", age: "6Y", img: KipImg },
+  { id:3, name: "Enzo", gender: "M", age: "6Y", img: EnzoImg },
+  { id:4, name: "Mouse", gender: "M", age: "5Y", img: MouseImg },
 ];
 
 const containerVariants = {
@@ -63,11 +64,13 @@ export default function Home() {
                 whileHover={{ scale: 1.05 }}
                 whileTap={{ scale: 0.95 }}
               >
+                <a href={'/dogs/'+ pet.id}>
                 <Image 
                   src={pet.img} 
                   alt={pet.name} 
                   className="h-80 w-80 border-gray-500 border-solid border-2 shadow-gray-400 shadow-2xl" 
                 />
+                </a>
               </motion.div>
               <motion.p 
                 className="text-white text-center text-2xl mt-4"
