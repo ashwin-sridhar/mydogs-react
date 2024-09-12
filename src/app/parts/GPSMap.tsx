@@ -15,9 +15,10 @@ const MapComponent = dynamic(
 const GPSMap: React.FC = () => {
   const [coordinates, setCoordinates] = useState<Coordinate[]>([]);
   const [socket, setSocket] = useState<WebSocket | null>(null);
+  const [connectionError, setConnectionError] = useState<string | null>(null);
 
   const initializeWebSocket = useCallback(() => {
-    const wsUrl = 'ws://ec2-3-88-248-126.compute-1.amazonaws.com:4000';
+    const wsUrl = process.env.NEXT_PUBLIC_FITBARK_WS;
     if (!wsUrl) {
       console.error('WebSocket URL is not defined');
       return;
@@ -28,6 +29,7 @@ const GPSMap: React.FC = () => {
 
     ws.onopen = () => {
       console.log('WebSocket connection established');
+      setConnectionError(null);
     };
 
     ws.onmessage = (event) => {
@@ -46,10 +48,12 @@ const GPSMap: React.FC = () => {
 
     ws.onerror = (error) => {
       console.error('WebSocket error:', error);
+      setConnectionError('Failed to connect. There might be an issue with the server certificate.');
     };
 
     ws.onclose = () => {
       console.log('WebSocket connection closed');
+      setConnectionError('Connection closed. Click to retry.');
     };
 
     setSocket(ws);
@@ -71,8 +75,28 @@ const GPSMap: React.FC = () => {
     };
   }, [initializeWebSocket]);
 
+  const handleRetry = () => {
+    if (socket) {
+      socket.close();
+    }
+    setConnectionError(null);
+    initializeWebSocket();
+  };
+
   return (
     <div className="h-screen w-full">
+      {connectionError && (
+        <div className="bg-red-100 border border-red-400 text-red-700 px-4 py-3 rounded relative" role="alert">
+          <strong className="font-bold">Connection Error: </strong>
+          <span className="block sm:inline">{connectionError}</span>
+          <button 
+            onClick={handleRetry}
+            className="bg-red-500 hover:bg-red-700 text-white font-bold py-2 px-4 rounded ml-4"
+          >
+            Retry Connection
+          </button>
+        </div>
+      )}
       <MapComponent coordinates={coordinates} />
     </div>
   );
