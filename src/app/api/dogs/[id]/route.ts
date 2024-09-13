@@ -9,8 +9,8 @@ export async function GET(
   console.log("Request obj"+request.body);  
   console.log("params id :"+params.id);
   const id = params.id
-  const URL=process.env.NEXT_PUBLIC_FITBARK_REST;
-  console.log("URL"+URL);
+ // const URL=process.env.NEXT_PUBLIC_FITBARK_REST;
+  console.log("URL");
   try {
     const apiRes = await fetch(`https://ashsridhar.xyz/dogs/${id}/activity`)
     const data = await apiRes.json()
