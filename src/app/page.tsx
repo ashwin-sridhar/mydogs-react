@@ -90,6 +90,7 @@ export default function Home() {
           animate={{ opacity: 1, y: 0 }}
           transition={{ delay: 1.5, duration: 0.5 }}
         >
+          <a href="/projectinfo"><p className="text-center text-white text-2xl underline">Project Information</p></a>
           <p className="text-center text-white text-2xl">The pack endorses Ashwin for Fitbark!</p>
           <p className="text-center text-white">This project is a demonstration created to showcase relevant skills for the engineer role at Fitbark by Ashwin Sridhar</p>
           <p className="text-center text-white">Tech: ReactJS, NextJS, Typescript, Framer motion, Tailwindcss, NodeJS, WS, ExpressJS, REST API, AWS EC2, Docker, AWS RDS MySQL, CI/CD, Python</p>
