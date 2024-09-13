@@ -6,13 +6,13 @@ export async function GET(
   request: NextRequest,
   { params }: { params: { id: string } }
 ) {
-  console.log("Request obj"+request.body);
+  console.log("Request obj"+request.body);  
   console.log("params id :"+params.id);
   const id = params.id
   const URL=process.env.NEXT_PUBLIC_FITBARK_REST;
   console.log("URL"+URL);
   try {
-    const apiRes = await fetch(`${URL}/dogs/${id}/activity`)
+    const apiRes = await fetch(`https://ashsridhar.xyz/dogs/${id}/activity`)
     const data = await apiRes.json()
     console.log("Data from node"+data);
     return NextResponse.json(data)
