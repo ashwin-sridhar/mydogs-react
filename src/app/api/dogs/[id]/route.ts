@@ -9,10 +9,10 @@ export async function GET(
   console.log("Request obj"+request.body);  
   console.log("params id :"+params.id);
   const id = params.id
- // const URL=process.env.NEXT_PUBLIC_FITBARK_REST;
-  console.log("URL");
+ const restUrl=process.env.NEXT_PUBLIC_FITBARK_REST;
+  console.log("REST_URL"+restUrl);
   try {
-    const apiRes = await fetch(`https://ashsridhar.xyz/dogs/${id}/activity`)
+    const apiRes = await fetch(`${restUrl}/dogs/${id}/activity`)
     const data = await apiRes.json()
     console.log("Data from node"+data);
     return NextResponse.json(data)

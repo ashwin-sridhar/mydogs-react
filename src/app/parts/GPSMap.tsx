@@ -18,7 +18,7 @@ const GPSMap: React.FC = () => {
   const [connectionError, setConnectionError] = useState<string | null>(null);
 
   const initializeWebSocket = useCallback(() => {
-    const wsUrl = 'wss://ashsridhar.xyz';
+    const wsUrl = process.env.NEXT_PUBLIC_FITBARK_WS;
     if (!wsUrl) {
       console.error('WebSocket URL is not defined');
       return;
