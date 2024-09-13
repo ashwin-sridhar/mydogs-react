@@ -9,9 +9,10 @@ export async function GET(
   console.log("Request obj"+request.body);
   console.log("params id :"+params.id);
   const id = params.id
-  console.log("URL"+process.env.NEXT_PUBLIC_FITBARK_REST);
+  var URL=process.env.NEXT_PUBLIC_FITBARK_REST;
+  console.log("URL"+URL);
   try {
-    const apiRes = await fetch(`https://ec2-3-234-163-231.compute-1.amazonaws.com:4000/dogs/${id}/activity`)
+    const apiRes = await fetch(`${URL}/dogs/${id}/activity`)
     const data = await apiRes.json()
     console.log("Data from node"+data);
     return NextResponse.json(data)
